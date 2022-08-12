@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="28ec588e-2ffd-4a6b-aa6e-800a8e6ebd1f" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="requestpocFlow" doc:id="3e1a0f22-d8a8-4a48-8567-9e9e33528c92" >
+		<http:listener doc:name="Listener" doc:id="2c91a838-c5b1-46e2-a21a-17cceadac2c9" config-ref="HTTP_Listener_config" path="/test"/>
+		<logger level="INFO" doc:name="Logger" doc:id="21362af6-0045-4ad4-8ba3-319e5d5bcf07" message="start floww"/>
+		<http:request method="GET" doc:name="Request" doc:id="bd6781c0-a16f-46ed-aa64-94abaeaa3c46" url="https://reqres.in/api/users/2"/>
+		<ee:transform doc:name="Transform Message" doc:id="6caf4751-9ed9-40ca-9346-4398e5b13946" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"it calls the rest api"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="ee9444cb-5910-42e4-8cc2-1a4057dc69bd" message="last fllow"/>
+	</flow>
+</mule>
